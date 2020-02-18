@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Preview Image</title>
+</head>
+<body>
+	<form runat="server">
+	  <input type='file' id="dokumen" accept="image/jpg, image/jpeg, application/pdf" />
+	</form>
+	
+	<div id="preview">
+		<img id="preview" src="preview.png" style="width: 600; height: 600; margin: 0 auto;" />
+		<h4>Preview</h4>
+	</div>
+	<div id="pdf" style="display: none;">
+		<iframe id="pdfPreview" src="#" width="800" height="600" style="margin: 0 auto;"></iframe>
+	</div>
+	<div id="gambar" style="display: none;">
+		<img id="imgPreview" src="#" alt="your image" style="width: 80%; height: auto;" />
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+	function readURL(input) {
+	  if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		
+		reader.onload = function(e) {
+		  var name = document.getElementById('dokumen');
+		  var file_name = name.files.item(0).name;
+		  var pecah = file_name.split(".");
+		  var ekstensi = pecah[1];
+		  if (ekstensi == 'pdf') {
+			console.log('pdf');
+			$('#pdfPreview').attr('src', e.target.result);
+			$('#imgPreview').attr('src', "#");
+			$('#pdf').show();
+			$('#gambar').hide();
+			$('#preview').hide();
+		  } else {
+			$('#imgPreview').attr('src', e.target.result);
+			$('#pdfPreview').attr('src', "#");
+			$('#pdf').hide();
+			$('#gambar').show();
+			$('#preview').hide();
+		  }
+		}
+		reader.readAsDataURL(input.files[0]);
+	  }
+	}
+
+	$("#dokumen").change(function() {
+	  readURL(this);
+	});
+	</script>
+</body>
+</html>
